@@ -12,7 +12,7 @@ const App: React.FC = () => {
   return (
     <>
       <Checkbox isChecked={isChecked} onChange={setIsChecked} />
-      <Button disabled={isChecked} />
+      <Button disabled={isChecked} title="button" onClick={() => {}} />
       <BrowserRouter>
         <Router />
       </BrowserRouter>

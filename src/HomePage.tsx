@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { Button1 } from "./Button";
 import React from "react";
 
 const HomePage = () => {
@@ -10,7 +11,7 @@ const HomePage = () => {
   return (
     <>
       <h1>Here is home!</h1>
-      <button onClick={onClick}>to index</button>
+      <Button1 onClick={onClick} title="to index" />
     </>
   );
 };
