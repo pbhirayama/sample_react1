@@ -1,13 +1,19 @@
-import React from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { Button1 } from "./Button";
+import { useEffect } from "react";
 
 // const articleIds=[1,2,3,4,5];
 
 const Article = () => {
+  const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
+  const urlParams = useParams<{ id?: string | undefined }>();
+  useEffect(() => {
+    setSelectedId(urlParams.id);
+  }, [urlParams.id]);
   const navi = useNavigate();
   const onClick = (id: number) => {
-    navi(`/article/${id}`);
+    navi(`/article/${id}`, { state: { from: selectedId } });
   };
   const buttons = [];
   for (let id: number = 1; id <= 5; id++) {
@@ -20,6 +26,7 @@ const Article = () => {
       />
     );
   }
+  console.log("Article");
   return (
     <>
       <h1>This is article</h1>

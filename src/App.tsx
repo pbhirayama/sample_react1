@@ -9,7 +9,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 const App: React.FC = () => {
   const [isChecked, setIsChecked] = useState(false);
-
+  console.log("App");
   return (
     <>
       <Checkbox isChecked={isChecked} onChange={setIsChecked} />

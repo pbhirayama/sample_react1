@@ -10,7 +10,7 @@ const SlashPage = () => {
     navi("/home");
   };
   const onClickA = () => {
-    navi("/article/1");
+    navi("/article");
   };
 
   return (
