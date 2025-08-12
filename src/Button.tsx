@@ -26,7 +26,11 @@ export const Button1: React.FC<ButtonProps> = ({
   const isSelected = selectedId === id;
   return (
     <>
-      <button disabled={disabled} onClick={() => onClick()}>
+      <button
+        disabled={disabled}
+        onClick={() => onClick()}
+        style={{ backgroundColor: isSelected ? "lightblue" : "white" }}
+      >
         {title}
       </button>
     </>

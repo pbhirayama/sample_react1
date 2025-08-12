@@ -1,13 +1,13 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+// import React from "react";
+// import { useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
-type ApiResponse = {
-  userId: number;
-  id: number;
-  title: string;
-  body: string;
-};
+// type ApiResponse = {
+//   userId: number;
+//   id: number;
+//   title: string;
+//   body: string;
+// };
 
 const APIPostsub = () => {
   const loca = useLocation();

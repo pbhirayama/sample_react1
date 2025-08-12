@@ -4,7 +4,7 @@ import { useState } from "react";
 import Checkbox from "./Checkbox";
 import Button from "./Button";
 import Router from "./router/Router";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // import Rooute from "./router/route"; 2個目の方法
 
@@ -21,7 +21,7 @@ const App: React.FC = () => {
         <BrowserRouter>
           <Router />
         </BrowserRouter>
-        {/* <Rooute />　2個目の方法 */}
+        {/* <Rooute /> 2個目の方法 */}
       </QueryClientProvider>
     </>
   );
