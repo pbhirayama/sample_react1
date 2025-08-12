@@ -1,8 +1,8 @@
 import { useState } from "react";
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
-import Checkbox from "./Checkbox";
-import Button from "./Button";
+import Checkbox from "./parts/Checkbox";
+import Button from "./parts/Button";
 import Router from "./router/Router";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

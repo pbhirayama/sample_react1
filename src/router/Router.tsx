@@ -1,11 +1,11 @@
 import { useRoutes } from "react-router-dom";
-import HomePage from "../HomePage";
-import SlashPage from "../SlashPage";
-import Article from "../Article";
-import Articlesub from "../Articlesub";
+import HomePage from "../pages/HomePage";
+import SlashPage from "../pages/SlashPage";
+import Article from "../pages/Article";
+import Articlesub from "../pages/article/Articlesub";
 // import { Children } from "react";
-import APIPost from "../APIPost";
-import APIPostsub from "../APIPostsub";
+import APIPost from "../pages/APIPost";
+import APIPostsub from "../pages/posts/APIPostsub";
 // import { Routes, Route } from 'react-router-dom';2番のやり方の時に使う
 
 // ファイルごとに分ける、大規模な時におススメ
