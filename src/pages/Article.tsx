@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { Button1 } from "./Button";
+import { Button1 } from "../parts/Button";
 import { useEffect } from "react";
 
 // const articleIds=[1,2,3,4,5];
