@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 // import { Link } from "react-router-dom"; 2番目のやり方で使用
 // import React from "react";
-import { Button1 } from "./Button";
+import { Button1 } from "../parts/Button";
 
 const SlashPage = () => {
   const navi = useNavigate();

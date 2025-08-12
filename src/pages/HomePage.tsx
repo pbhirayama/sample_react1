@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Button1 } from "./Button";
+import { Button1 } from "../parts/Button";
 // import React from "react";
 
 const HomePage = () => {
