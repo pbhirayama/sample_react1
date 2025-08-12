@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // import { Outlet, Link } from "react-router-dom";
-import Article from "../Article";
-import Articlesub from "../Articlesub";
+import Article from "../pages/Article";
+import Articlesub from "../pages/article/Articlesub";
 
 const route = () => {
   return (
