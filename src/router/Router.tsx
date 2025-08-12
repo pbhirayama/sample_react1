@@ -3,7 +3,7 @@ import HomePage from "../HomePage";
 import SlashPage from "../SlashPage";
 import Article from "../Article";
 import Articlesub from "../Articlesub";
-import { Children } from "react";
+// import { Children } from "react";
 import APIPost from "../APIPost";
 import APIPostsub from "../APIPostsub";
 // import { Routes, Route } from 'react-router-dom';2番のやり方の時に使う

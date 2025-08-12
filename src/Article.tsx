@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { Button1 } from "./Button";
 import { useEffect } from "react";

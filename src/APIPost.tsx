@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+// import React, { useEffect, useState } from "react";
+// import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 
 type ApiResponse = {
   userId: number;
@@ -22,7 +22,7 @@ const APIPost = () => {
   //     const response = await fetch("https://jsonplaceholder.typicode.com/posts");
   //     const data: ApiResponse[] = await response.json();
   //     return data;
-  //   };　実装練習5のやつ
+  //   }; 実装練習5のやつ
   const {
     data: posts,
     isLoading,
@@ -31,13 +31,13 @@ const APIPost = () => {
     queryKey: ["posts"],
     queryFn: fetchPosts,
   });
-  //   const [posts, setPosts] = useState<ApiResponse[]>([]);　実装練習5のやつだけど使わないかも？
+  //   const [posts, setPosts] = useState<ApiResponse[]>([]); 実装練習5のやつだけど使わないかも？
 
   //   useEffect(() => {
   //     fetchData().then((data) => {
   //       setPosts(data);
   //     });
-  //   }, []);　実装練習5のやつ
+  //   }, []); 実装練習5のやつ
   const navi = useNavigate();
   const onClick = (post: ApiResponse) => {
     navi(`/posts/${post.id}`, { state: { current: post } });
