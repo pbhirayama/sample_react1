@@ -6,11 +6,14 @@ import { Button1 } from "../parts/Button";
 const SlashPage = () => {
   const navi = useNavigate();
 
-  const onClick = () => {
+  const onClickH = () => {
     navi("/home");
   };
   const onClickA = () => {
     navi("/article");
+  };
+  const onClickP = () => {
+    navi("/posts");
   };
 
   return (
@@ -20,7 +23,9 @@ const SlashPage = () => {
       <Link onClick={onClick} to="/home">
         to home
       </Link> */}
-      <a onClick={onClick}>to home</a>
+      {/* <a onClick={onClickH}>to home</a> */}
+      <Button1 disabled={false} title="to home" onClick={() => onClickH()} />
+      <Button1 disabled={false} title="to posts" onClick={() => onClickP()} />
       <Button1 disabled={false} title="to article" onClick={() => onClickA()} />
     </>
   );
