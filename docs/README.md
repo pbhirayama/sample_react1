@@ -1005,7 +1005,7 @@ const fetchData = async (): Promise<ApiResponse[]> => {
 <pre>{body}</pre>
 ```
 
-など<pre>で囲んでおけばとりあえず大丈夫！
+など`<pre>`で囲んでおけばとりあえず大丈夫！
 
 ### 13．.gitignoreに記述するのはなぜ？
 
