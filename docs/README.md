@@ -24,6 +24,7 @@ sudo passwd hoge  #先ほど作成したユーザのパスワードを設定(hog
 ```
 
 参照：https://learn.microsoft.com/ja-jp/windows/wsl/install#manual-installation-steps
+参考：[【2025年版】WindowsでWSLをインストールする方法｜コマンド一発＆超簡単！](https://www.choge-blog.com/programming/windowsinstallwsl/)
 
 ④Ubuntuのパッケージアップデートのため、次のコマンドを実行する
 〈Ubuntuの細心のパッケージ情報を取得〉
@@ -223,7 +224,222 @@ const maxQuizLen = location.state.maxQuizLen;
 
 - fetchの基本が知れるのでオススメ
 
+### 15．GitHubの新規リポジトリ作成方法
+
+[新しいリポジトリの作成](https://docs.github.com/ja/repositories/creating-and-managing-repositories/creating-a-new-repository)
+
+- 今回はPublicなリポジトリを作成
+  →間違えてprivateで作成しても後ほど変更できる
+- 名前などは任意
+
 # VSCodeとGitHubの連携
+
+### 1．準備
+
+参照：React理解 15
+
+- 体系的理解
+  [Gitを使ったバージョン管理](https://backlog.com/ja/git-tutorial/intro/01/)
+  > 「作業スペースの内容をリポジトリに反映する(push)」「リポジトリの内容を作業スペースに反映する(pull)」作業をすることで、作業ごとの差分の同期ができる
+- GitHub上にPublicなリポジトリを作成
+  →共有する際はブラウザを開いた際のURLでよいが、マージ等行う予定がある場合は招待を行う
+- ローカルの内容をリポジトリへ連携
+  [【初心者向け】GithubとローカルPCとの連携](https://qiita.com/tariki-code/items/1c1d720bf389d1c47d85)
+  > 「`git clone`」→リポジトリ上に既存のコードがあって、自分の作業場所にリポジトリのコードを持ってきたい場合
+
+> 「`git remote add <リポジトリのURL>`」→自分の作業場所にリポジトリに反映したいコードがある場合 -「`Git Graph`」拡張機能をインストールすると、現在のGitのブランチの状態を視覚的に確認できる
+
+### 2．ブランチ作成、push、PR(Pull Request)の作成
+
+- developブランチを作成
+  ※課題に番号が振られていれば、それを使用した名前のブランチを作成
+- 作業内容(ローカル)を`develop`ブランチで`push`し、PR(Pull Request)を作成する
+  →PRはレビュワーに連携、確認完了次第マージされる
+- `main`ブランチを`pull`する(マージされた内容をローカルに取り込む)
+
+> PR・MR(Merge Request)では、`description`の部分に「(もしあれば)課題番号」、「このブランチでは何を実装したか」、「(もしあれば)どんな分からない部分があるか」などを記述する
+
+> PR・MR(Merge Request)では、レビュワーや指摘対応者を指定する
+> →画面右の「`Reviewers`」と「`Assignees`」を設定すれば良い
+> [コラボレーターを個人リポジトリに招待する](https://docs.github.com/ja/enterprise-cloud@latest/account-and-profile/how-tos/setting-up-and-managing-your-personal-account-on-github/managing-access-to-your-personal-repositories/inviting-collaborators-to-a-personal-repository#inviting-a-collaborator-to-a-personal-repository)
+
+### 3．不要ファイルをPRから除外
+
+- `package.json`と同階層に`.gitignore`ファイルを作成
+  →除外対象のファイル名を記載
+  ※今回は`package-lock.json`と`node_modules`ディレクトリを記載する
+
+> 1度gitにアップしている場合はキャッシュを削除する必要がある
+> [.gitignoreに記載したのに反映されない件](https://qiita.com/fuwamaki/items/3ed021163e50beab7154)
+
+> [[Git] .gitignoreの仕様詳解](https://qiita.com/anqooqie/items/110957797b3d5280c44f)
+
+### 4．コミットの修正
+
+[git rebase についてまとめてみた](https://qiita.com/KTakata/items/d33185fc0457c08654a5)
+
+> `git rebase(各種オプション)`にて過去のコミットに手を加えることができる
+
+> 同じコメントで表せるような作業(修正作業のまた修正など)の場合は、新たにコミットを打つのではなく編集して見直す
+
+### 5．PRマージ後、ローカルでの作業
+
+最新のリモートリポジトリの内容をローカルリポジトリに反映
+
+```bash
+$ git fetch -p
+```
+
+mainブランチの最新化
+
+```bash
+$ git checkout main
+$ git pull --rebase
+# $ git pull -rでも良い
+
+# developブランチの最新化(次に作業をする際は、最新のmainブランチの先頭からdevelopブランチを生やす)
+$ git checkout develop
+# 新しくブランチを作る場合は
+# $ git checkout -b <作業ブランチ>
+$ git rebase main
+```
+
+> マージ後不要になったブランチについて、リモートリポジトリ上は削除されるがローカルリポジトリ上は自動的に削除されない
+> →`git branch -D <不要になったブランチ名>`で適宜削除する
+
+※コミット前の差分を一時退避させたいとき
+
+```bash
+$ git stash -u
+```
+
+### 6．issue対応
+
+> 1issueにつき1ブランチ(`feature/<issueのID>`)
+
+> コミットメッセージの書式は「`feature/<issueのID> <メッセージ本文(実装内容のサマリ)>`」
+
+> issue対応が完了しPRを作成する際は、「`closes #<対応したissueのID>`」のコメントをつける
+> ※マージされた際に当該`issue`が自動で`close`される
+
+### 7．他ブランチの取り込み
+
+```bash
+$ git cherry-pick <取り込みたいコミットID>
+```
+
+> <取り込みたいコミットID>のコミットが現在のブランチの先頭に追加される
+
+> コミットIDはGitGraph上や`git log`コマンドで確認する
+
+### コードの品質均一化に向けた拡張機能① Prettierの導入
+
+①VSCodeに拡張機能`Prettier - Code formatter`をインストール
+②`/.vscode`ディレクトリを作成し、`settings.json`を作成
+※現場では現場のルールを確認して決める
+
+```json
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "[typescript]": {
+    "editor.useTabStops": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "[typescriptreact]": {
+    "editor.useTabStops": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "[html]": {
+    "editor.useTabStops": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "[css]": {
+    "editor.useTabStops": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  }
+}
+```
+
+③ターミナルで`$ npm i -D prettier@latest`を実施
+④`/package.json`を編集
+
+```json
+  "scripts": {
+    "dev": "npm run build && vite",
+    "build": "npm run format && npm run lint && npm run type-check && vite build",
+    "format": "prettier --write .",
+    "lint": "eslint .",
+    "type-check": "tsc -b",
+    "preview": "vite preview"
+  },
+```
+
+⑤`/.prettierrc`ファイルを作成し、以下のように記述
+
+```
+{
+  "singleQuote": false,
+  "jsxSingleQuote": true,
+  "useTabs": false,
+  "tabWidth": 2,
+  "semi": true,
+  "bracketSpacing": true,
+  "trailingComma": "none",
+  "printWidth": 120
+}
+```
+
+> アプリの実行やビルド時に、ずれているファイルを自動的に整形できるようになる
+
+> VSCodeでも保存時に自動整形してくれる機能がある
+> [Visual Studio Codeで保存時自動整形の設定方法](https://qiita.com/mitashun/items/e2f118a9ca7b96b97840)
+
+### コードの品質均一化に向けた拡張機能② ESLintの導入
+
+①VSCodeの拡張機能の`ESLint`をインストール
+②`./package.json`の`scripts.lint`を編集
+
+```json
+"lint": "eslint . --report-unused-disable-directives --max-warnings 0 --fix"
+```
+
+③任意のファイルでエラーが発生している際、`npm run lint`でエラーが発生し、`npm run build`や`npm run dev`が途中で止まることを確認する
+
+> PR提出やビルド前にエラーを検知可能になる
+
+# Gitポイントまとめ
+
+### 作業前
+
+> 基準となるブランチが細心化されているかを確認する
+> 基準となるブランチに移り、`git fetch -p`→`git pull --r`を行うとローカルリポジトリの基準ブランチの内容が、細心のリモートリポジトリの基準ブランチの内容に上書きされる
+> その後、`git checkout -b <作業ブランチ>`を実行する
+> ※古いままの基準ブランチだと、デグレの可能性あり
+
+> ブランチのIDを確認する
+> Redmine(タスク管理ツール)を使用する場合、Redmine上でチケットを起票し、そのチケットIDをもとにブランチ名が決定される
+> →GitHub上ではissueを作成してそのIDでブランチ名を決めていく
+
+ex）#2のissueであれば、対応ブランチ名は`feature/2`
+
+### 作業中/後
+
+> 基準となるブランチの状態を確認する
+> PR・MRを提出する前に、基準ブランチの状態をもう一度確認する
+> →作業ブランチが遅れている場合、`rebase`を通じて最新の基準ブランチから作業ブランチを生やすように修正する
+> ※`conflict`もこの時に解消
+
+> PR・MRには対応内容を必ず記載する
+> PRの`description`に「今回の作業ブランチで何を実装したか」をできるだけ詳細に記載
+> →Redmineでも、対応内容やレビュワーの設定、レビュワーへの質問事項などを記載
 
 # 実装練習
 
@@ -304,11 +520,11 @@ const maxQuizLen = location.state.maxQuizLen;
 
 > `post`においても型定義を行い、`any`型は使わない
 > →予想外のデータが来た時にエラーに気付きづらくなるため
-> ※interfaceとtypeはほぼ同じ機能
+> ※`interface`と`type`はほぼ同じ機能
 
 ### 6.データフェッチの方法を@tanstack/react-queryに変更
 
-- @tanstack/react-queryをインストール
+- `@tanstack/react-query`をインストール
 
 ```bash
 npm install @tanstack/react-query
@@ -351,9 +567,9 @@ onInput = (e) => {
 const { names, inputname } = this.state;
 ```
 
-`names: [...names, inputname]` …元のnames配列を展開し、最後にinputnameを追加した新たなnames配列を作成
+`names: [...names, inputname]` …元の`names`配列を展開し、最後に`inputname`を追加した新たな`names`配列を作成
 
-※Reactでは、names.pushなど元の配列に対して直接触れる(=破壊的操作)のはNG
+※Reactでは、`names.push`など元の配列に対して直接触れる(=破壊的操作)のは**NG**
 
 ### 3．配列で履歴を作る
 
@@ -367,4 +583,512 @@ this.setState((prevState) => ({
 }));
 ```
 
-→履歴を作成したいなら、元の配列を入れてある配列（2重配列になってる）に新しいnames配列を格納すれば良い
+→履歴を作成したいなら、元の配列を入れてある配列（2重配列になってる）に新しい`names`配列を格納すれば良い
+
+### 4．slice()
+
+`array.slice(start, end)`
+→配列の`start`から`end`の1つ前までを取得
+`array`：配列名
+`start`：開始インデックス(数字)(含む)
+`end`：終了インデックス(数字)(含まない)
+※`end`を省略した場合、配列の末尾まで取得される
+
+ex）
+
+```tsx
+names: [...names.slice(0, index), ...names.slice(index + 1)];
+```
+
+→`index`番目の要素を削除した新しい配列を作成する
+
+### 5．React.FCとは
+
+Reactの関数コンポーネントだということをTypeScriptに伝える書き方
+`React.FC<--Props>`でPropsの型指定可能
+※--は指定したいPropsの名前
+
+### 6．アロー関数まとめ
+
+・関数宣言
+
+```tsx
+function test() {
+  document.write("Hello World");
+}
+```
+
+→呼び出し：`test()`
+
+・関数式…関数を間接的に呼び出し
+
+```tsx
+const test = function () {
+  document.write("Hello World");
+};
+```
+
+→呼び出し：`test()`
+
+・アロー関数…関数式の`function`が場所を変えて=>になったと考える
+
+```tsx
+const test = () => {
+  document.write("Hello World");
+};
+```
+
+→呼び出し：`test()`
+
+ex）
+
+```tsx
+let sample2 = (a, b) => {
+  document.write(a + b);
+};
+```
+
+→呼び出し：`sample2(2,3)`
+
+※引数が1つの場合…`()`の省略が可能
+※引数がない場合…上記の通り`()`が必要
+
+```tsx
+const testes = n => n*2;　←return省略
+＝const double = n => { return n * 2 };
+```
+
+←`{}`があれば`return`をかく
+
+※複数の文を処理する場合、`{}`を使用し、`return`を明示的に記述する必要あり
+
+※オブジェクトを返す時、`{}`は`return`が必要だが、`()`だと`return`省略可能
+ex）省略前
+
+```tsx
+const getUser = () => {
+  return { name: "太郎", age: 25 };
+};
+```
+
+→呼び出し：`getUser()`;
+
+ex）省略後
+
+```tsx
+const getUser = () => ({ name: "太郎", age: 25 });
+```
+
+→呼び出し：`getUser()`;
+
+※`=`のあとが関数の時かつ`TSX`か`JSX`のときは`{}`で囲む必要あり
+
+```tsx
+onChange={(e) => onChange(e.target.checked)}
+{/*ダメな例
+onChange = e => onChange(e.target.checked)*/}
+```
+
+→`onChange`に文字列を渡しているように見える
+→`=`の右に`{}`がないから`JS`の式として解釈されない
+→`e=>onChange(e.target.checked)`が`JS`でなく、ただの値として扱われる
+
+### 7．.tsxのreturn内でfor文？
+
+`Array.from` …tsxのreturn内でfor文の代わりに使用できる、配列を作りながら中身の生成ができるもの
+`Array.from({ length: N }, (要素, インデックス) => 処理)`
+
+ex）
+
+```tsx
+Array.from({ length: 3 }, (_, i) => i); // [0, 1, 2]
+```
+
+※上記`(_, i) => (i)`の部分
+`_` …値は使わないという意味の慣習、配列の中身が空なので不要など
+`i` …インデックス
+
+### 8．typeについて
+
+```tsx
+type Person = {
+  name: string;
+  age: number;
+};
+```
+
+があったとする。これは
+
+```tsx
+type Person={
+	name:string:"太郎";
+	age:number:20;
+};
+```
+
+とはできない。もししたいなら
+
+```tsx
+type Person = {
+  name: string;
+  age: number;
+  isStudent: boolean;
+};
+
+let person: Person = {
+  name: "Taro",
+  age: 20,
+  isStudent: false
+};
+```
+
+→このような感じで別で初期化する必要がある
+
+※`JavaScript`では
+
+```js
+let person = {
+  name: "Taro",
+  age: 20
+};
+```
+
+こうして定義するが、これは型指定しないから
+→`TypeScript`は`JavaScript`から派生した言語のため、`TypeScript`特有の`type`定義は上と一緒に定義するとはじかれる
+
+※プロパティの追加の違い①
+`JavaScript`は例えば上の`person`なら
+
+```js
+person.city = "東京都";
+```
+
+とプロパティを追加できるが、
+`TypeScript`の場合、
+
+```tsx
+type person = {
+  name: string;
+  age: number;
+};
+```
+
+と書いてある{}内に追加しないといけない
+
+※プロパティの追加の違い②
+`TypeScript`でも
+
+```tsx
+type Person = {
+  name: string;
+  age: number;
+  [key: string]: any;
+};
+```
+
+このように書けばどんなプロパティでも後々追加可能になるが、安全性が下がるから**絶対に**やめるべき
+`JavaScript`でも
+
+```js
+person.city = "東京都";
+person.hobbies = ["読書", "旅行"];
+```
+
+→こういったものも追加できるが、**絶対に**やめておくべき
+
+### 9．State、useLocationについて
+
+```tsx
+const [selectedId, setSelectedId] = useState<number | null>(null);
+```
+
+`selectedId` …現在の状態（選択されたID）を表す変数、`useState`から取り出す
+`setSelectedId` …状態を更新するための関数
+→`selectedId`を変更したいときに使用する
+`useState<型>(初期値)` …Reactに「この状態はこの型で初期値はこれ」と伝える関数
+→上記だと`state`が`number`か`null`になる、初期値は`null`（まだ選ばれていない）、何かを選んだ時に`setSelectedId(3)`のように変更される
+
+### 10．interfaceとtypeの違い
+
+- interface
+
+```tsx
+interface Person {
+  name: string;
+  age: number;
+  greet(): void;
+}
+```
+
+- type
+
+```tsx
+type Person = {
+  name: string;
+  age: number;
+  greet(): void;
+};
+```
+
+※似てる…
+
+①再定義
+
+- interface
+
+```tsx
+interface Person {
+  name: string;
+}
+interface Person {
+  age: number;
+}
+// OK: 自動的に { name: string; age: number } になる
+const p: Person = { name: "John", age: 25 };
+```
+
+- type
+
+```tsx
+type Person = {
+  name: string;
+};
+{
+  /* エラー：重複定義できない
+type Person = {
+  age: number;
+}*/
+}
+```
+
+②ユニオン型・交差型
+
+- interface
+  …ユニオン型を直接定義できない
+
+```tsx
+{
+  /* エラー
+interface Status = "success" | "error";
+*/
+}
+```
+
+- type
+
+```tsx
+type A = { foo: string };
+type B = { bar: number };
+{
+  /* ↓交差型で { foo: string; bar: number }*/
+}
+type C = A & B;
+{
+  /* ↓ユニオン型もOK*/
+}
+type Status = "success" | "error" | "loading";
+```
+
+③拡張性
+
+- interface
+  …拡張可能（`extends`、再宣言もOK）
+- type
+  …拡張も可能だが制限あり
+
+④型としての柔軟性
+
+- interface
+  …オブジェクト型専用
+- type
+  …関数型、プリミティブ、タプルなどもOK
+
+⑤主な用途
+
+- interface
+  …クラスの設計・継承
+- type
+  …より柔軟な型定義、ユニオン
+
+### 11．fetch関数
+
+`fetch` …webブラウザや`Node.js`などの環境で、外部リソースや`API`にアクセスするためのメソッド
+→`Promise`ベースのインタフェースを持つため非同期処理としてデータを取得する
+→ページをリロードせずにサーバからデータを取得したりデータを送信したりできる
+
+ex）
+
+```tsx
+fetch("https://api.example.com/data")
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data); // 取得したデータを表示
+  })
+  .catch((error) => {
+    console.error("エラーが発生:", error);
+  });
+```
+
+→指定した`URL`からデータ取得
+※戻り値は`Promise`オブジェクト
+※`Promise`オブジェクトは`Response`オブジェクトを解決値として持つ
+→取得したデータを`JSON`形式と仮定して`response.json()`を使用し`JSON`として解析
+→取得したデータをコンソールに表示、エラーがあれば`catch`が反応
+
+ex）
+
+```tsx
+fetch('https://api.example.com/data')
+  .then(response => {
+    // ステータスコードが200番台でなければエラーとして処理
+    if (!response.ok) {　←Promiseの解決値Responseを用いてチェック
+      throw new Error('ネットワーク応答が不正です。');
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log(data); // 取得したデータを表示
+  })
+  .catch(error => {
+    console.error('エラーが発生:', error);
+  });
+```
+
+- 基本的なAPI呼び出し
+
+```tsx
+// APIから取得するデータの型を定義
+interface ApiResponse {
+  userId: number;
+  id: number;
+  title: string;
+  body: string;
+}
+
+// APIからデータを取得する関数
+async function fetchData(): Promise<ApiResponse[]> {
+  const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+  const data: ApiResponse[] = await response.json();
+  return data;
+}
+
+// データ取得を実行
+fetchData().then((data) => {
+  console.log(data);
+});
+```
+
+※`async` …非同期処理（`asynchronous`）を簡単に書くための構文
+→`Promise`より見やすく、エラー処理も簡単にできる
+
+```tsx
+async function 〇〇(): Promise<型> {
+  //処理
+}
+```
+
+※`await` …`Promise`が解決されるまで待機して、結果を変数に代入する
+
+※`API`からデータ取得する関数（アロー関数）
+
+```tsx
+const fetchData = async (): Promise<ApiResponse[]> => {
+  //処理
+};
+```
+
+※`.then` …「`Promise`が成功した時」（そのとき）に実行される関数を登録する
+
+### 12．string型内にhtmlの\nなどが混ざっている場合
+
+```tsx
+<pre>{body}</pre>
+```
+
+など<pre>で囲んでおけばとりあえず大丈夫！
+
+### 13．.gitignoreに記述するのはなぜ？
+
+- `node_modules`ディレクトリと`package-lock.json`は`npm i`を実行した際に生成され、その中に外部パッケージの情報を格納していく
+  →外部パッケージの情報は`package.json`に記載されているため、上記2フォルダ・ファイルをGitで管理する必要はない
+
+### 14．ブランチ作成
+
+①VScode上にブランチを作る
+→左下の現在のブランチ名（`main`など）をクリックし、新しいブランチを作成
+→もしくは、VScodeのターミナルに`git checkout -b <ブランチ名>`と入力
+
+②新規ブランチをリモートにプッシュ
+→プロジェクトがあるフォルダに移動する
+`cd C:/Users/pbh1-hirayama/Documents/練習用/react2/sample_react1` のように
+→`git push -u origin <ブランチ名>`　…GitHubに新規ブランチ名のブランチが作成される（コミットし、マージされたいときにも入力）
+③いつも通りコミットプッシュマージをしていく
+
+※最新のリモートリポジトリの内容をローカルリポジトリに反映
+`git fetch -p`
+
+※mainブランチの最新化
+`git checkout main`
+`git pull --rebase` …ローカルリポジトリの基準ブランチの内容が細心のリモートリポジトリの基準ブランチの内容に上書きされる
+
+＊developブランチの最新化（次に作業する際は最新のmainブランチの先頭からdevelopブランチを生やす）
+`git checkout develop(枝分かれブランチ)`
+→`git checkout -b <作業ブランチ>` でも良い …現在ブランチから新規作業ブランチを作成し、同時にそのブランチに切り替える
+`git rebase main`　…現在のブランチにmainブランチの最新の変更を取込む
+
+※いらなくなったブランチは適宜削除する
+`git branch -D <不要になったブランチ名>`
+
+※コミットのコメントを変更する方法
+
+```bash
+git config --global core.editor "code --wait"
+```
+
+…rebase時のエディタをVScodeに設定
+`git rebase -i HEAD^` …「`^`」の数だけ前のコミットを変更対象に含められる
+→「`pick abc1234 Your original commit message`」みたいに出てくる
+(pickはメッセージの確認みたいなものでそのまま使われる)
+→「`reword`」を設定することでコミット内容を変更せずにコミットメッセージのみ変更となる（上記pickをrewordに変更）
+→`reword pick abc1234 Your original commit message`
+
+※直前のコミットだけを直したいなら
+
+```bash
+git commit --amend`
+```
+
+※複数コミットにrewordを使う時
+
+```bash
+git rebase -i HEAD~3
+```
+
+→「`reword abc1234 first commit`
+`reword def5678 second commit`
+`reword ghi9012 third commit`」のように指定数（今回なら3つ）出てくるすべてを「`reword`」に書き換える
+→メッセージ編集画面が指定数出てくる（各コミットは独立して残る）
+
+※複数コミットをまとめたい場合
+ex）3つコミットがあるとする
+
+```bash
+git rebase -i HEAD~3
+```
+
+→pick a111111 初期実装
+pick b222222 コメント追加
+pick c333333 タイポ修正
+
+1．`squash`（統合、メッセージは変更）の場合
+pick a111111 初期実装
+_squash_ b222222 コメント追加
+_squash_ c333333 タイポ修正　　とする
+→メッセージ編集文が出てくるためそれに従い、メッセージを変更する
+→変更メッセージと共にコミットされた1つのコミットとして保存される
+
+2．`fixup`（統合、メッセージも統合）の場合
+pick a111111 初期実装
+_fixup_ b222222 コメント追加
+_fixup_ c333333 タイポ修正
+→何も聞かれず3つが1つにまとまり、メッセージは「初期実装」だけが残る
