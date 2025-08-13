@@ -1,8 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-// import React, { useEffect, useState } from "react";
-// import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-// import { useParams } from "react-router-dom";
+import { APIPostContentPane } from "../components/panes/APIPostContentPane";
 
 type ApiResponse = {
   userId: number;
@@ -17,7 +15,7 @@ const fetchPosts = async (): Promise<ApiResponse[]> => {
   return await response.json();
 };
 
-const APIPost = () => {
+export const APIPostContainer = () => {
   //   const fetchData = async (): Promise<ApiResponse[]> => {
   //     const response = await fetch("https://jsonplaceholder.typicode.com/posts");
   //     const data: ApiResponse[] = await response.json();
@@ -46,17 +44,5 @@ const APIPost = () => {
   if (isLoading) return <p>読み込み中…</p>;
   if (isError || !posts) return <p>データ取得に失敗しました</p>;
 
-  return (
-    <>
-      {posts.map((post) => (
-        <div key={post.id} onClick={() => onClick(post)} style={{ cursor: "pointer" }}>
-          <h2>{post.title}</h2>
-          <tr />
-          <p>{post.body}</p>
-        </div>
-      ))}
-    </>
-  );
+  return <APIPostContentPane posts={posts} onClick={onClick} />;
 };
-
-export default APIPost;
