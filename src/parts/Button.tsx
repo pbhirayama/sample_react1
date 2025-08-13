@@ -16,13 +16,7 @@ const Button: React.FC<ButtonProps> = ({ disabled }) => {
   );
 };
 
-export const Button1: React.FC<ButtonProps> = ({
-  title,
-  disabled = false,
-  onClick,
-  selectedId,
-  id,
-}) => {
+export const Button1: React.FC<ButtonProps> = ({ title, disabled = false, onClick, selectedId, id }) => {
   const isSelected = selectedId === id;
   return (
     <>

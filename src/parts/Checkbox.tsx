@@ -8,11 +8,7 @@ type CheckboxProps = {
 const Checkbox: React.FC<CheckboxProps> = ({ isChecked, onChange }) => {
   return (
     <>
-      <input
-        type="checkbox"
-        checked={isChecked}
-        onChange={(e) => onChange(e.target.checked)}
-      />
+      <input type='checkbox' checked={isChecked} onChange={(e) => onChange(e.target.checked)} />
     </>
   );
 };

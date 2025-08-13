@@ -13,11 +13,11 @@ const Router = () => {
   const routingConfig = [
     {
       path: "/",
-      element: <SlashPage />,
+      element: <SlashPage />
     },
     {
       path: "/home",
-      element: <HomePage />,
+      element: <HomePage />
     },
     {
       path: "/article",
@@ -25,18 +25,18 @@ const Router = () => {
       children: [
         {
           path: ":id",
-          element: <Articlesub />,
-        },
-      ],
+          element: <Articlesub />
+        }
+      ]
     },
     {
       path: "/posts",
-      element: <APIPost />,
+      element: <APIPost />
     },
     {
       path: "/posts/:id",
-      element: <APIPostsub />,
-    },
+      element: <APIPostsub />
+    }
     // 想定外のパスの場合はページが存在しない場合の画面へ遷移
     // { path: '*', element: <NotFound /> }
   ];

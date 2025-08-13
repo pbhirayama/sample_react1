@@ -17,7 +17,7 @@ const App: React.FC = () => {
     <>
       <QueryClientProvider client={queryClient}>
         <Checkbox isChecked={isChecked} onChange={setIsChecked} />
-        <Button disabled={isChecked} title="button" onClick={() => {}} />
+        <Button disabled={isChecked} title='button' onClick={() => {}} />
         <BrowserRouter>
           <Router />
         </BrowserRouter>

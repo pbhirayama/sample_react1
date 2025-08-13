@@ -11,7 +11,7 @@ const HomePage = () => {
   return (
     <>
       <h1>Here is home!</h1>
-      <Button1 onClick={onClick} title="to index" />
+      <Button1 onClick={onClick} title='to index' />
     </>
   );
 };

@@ -17,14 +17,7 @@ const Article = () => {
   };
   const buttons = [];
   for (let id: number = 1; id <= 5; id++) {
-    buttons.push(
-      <Button1
-        key={id}
-        title={`to article:${id}`}
-        disabled={false}
-        onClick={() => onClick(id)}
-      />
-    );
+    buttons.push(<Button1 key={id} title={`to article:${id}`} disabled={false} onClick={() => onClick(id)} />);
   }
   console.log("Article");
   return (

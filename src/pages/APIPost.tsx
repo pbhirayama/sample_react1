@@ -26,10 +26,10 @@ const APIPost = () => {
   const {
     data: posts,
     isLoading,
-    isError,
+    isError
   } = useQuery({
     queryKey: ["posts"],
-    queryFn: fetchPosts,
+    queryFn: fetchPosts
   });
   //   const [posts, setPosts] = useState<ApiResponse[]>([]); 実装練習5のやつだけど使わないかも？
 
@@ -49,11 +49,7 @@ const APIPost = () => {
   return (
     <>
       {posts.map((post) => (
-        <div
-          key={post.id}
-          onClick={() => onClick(post)}
-          style={{ cursor: "pointer" }}
-        >
+        <div key={post.id} onClick={() => onClick(post)} style={{ cursor: "pointer" }}>
           <h2>{post.title}</h2>
           <tr />
           <p>{post.body}</p>
