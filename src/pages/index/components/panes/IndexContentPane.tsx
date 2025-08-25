@@ -1,3 +1,4 @@
+// import React from "react";
 import Button from "../../../../parts/Button";
 import { Button1 } from "../../../../parts/Button";
 import Checkbox from "../../../../parts/Checkbox";
@@ -20,6 +21,7 @@ export const IndexContentPane = ({ isChecked, onChange, onClickH, onClickA, onCl
     {/* <a onClick={onClickH}>to home</a> */}
     <Checkbox isChecked={isChecked} onChange={onChange} />
     <Button disabled={isChecked} title='button' onClick={() => {}} />
+    <br />
     <Button1 disabled={false} title='to home' onClick={() => onClickH()} />
     <Button1 disabled={false} title='to posts' onClick={() => onClickP()} />
     <Button1 disabled={false} title='to article' onClick={() => onClickA()} />

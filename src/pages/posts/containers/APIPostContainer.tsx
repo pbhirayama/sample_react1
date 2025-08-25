@@ -24,10 +24,10 @@ export const APIPostContainer = () => {
   const {
     data: posts,
     isLoading,
-    isError
+    isError,
   } = useQuery({
     queryKey: ["posts"],
-    queryFn: fetchPosts
+    queryFn: fetchPosts,
   });
   //   const [posts, setPosts] = useState<ApiResponse[]>([]); 実装練習5のやつだけど使わないかも？
 
