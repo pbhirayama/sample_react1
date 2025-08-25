@@ -1,4 +1,4 @@
-// import React, { useState } from "react";
+import React from "react";
 
 type CheckboxProps = {
   isChecked: boolean;
@@ -8,11 +8,7 @@ type CheckboxProps = {
 const Checkbox: React.FC<CheckboxProps> = ({ isChecked, onChange }) => {
   return (
     <>
-      <input
-        type="checkbox"
-        checked={isChecked}
-        onChange={(e) => onChange(e.target.checked)}
-      />
+      <input type='checkbox' checked={isChecked} onChange={(e) => onChange(e.target.checked)} />
     </>
   );
 };

@@ -558,7 +558,7 @@ ex）
 }
 onInput = (e) => {
   this.setState({
-    inputname: e.target.value
+    inputname: e.target.value,
   });
 };
 {
@@ -579,7 +579,7 @@ ex）
 this.setState((prevState) => ({
   names: [...prevState.names, prevState.inputname],
   namesHistory: [...prevState.namesHistory, [...prevState.names]],
-  inputname: ""
+  inputname: "",
 }));
 ```
 
@@ -738,7 +738,7 @@ type Person = {
 let person: Person = {
   name: "Taro",
   age: 20,
-  isStudent: false
+  isStudent: false,
 };
 ```
 
@@ -749,7 +749,7 @@ let person: Person = {
 ```js
 let person = {
   name: "Taro",
-  age: 20
+  age: 20,
 };
 ```
 
